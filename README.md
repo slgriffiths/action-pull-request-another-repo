@@ -15,34 +15,23 @@ This GitHub Action copies the contents of a folder (not the folder itself) from 
 
         - name: Create pull request
           uses: slgriffiths/action-pull-request-another-repo@v1.0.0
-          env:
-            API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
           with:
-            source_folder: 'source-folder'
-            destination_repo: 'user-name/repository-name'
-            destination_folder: 'folder-name'
-            destination_base_branch: 'branch-name'
-            destination_head_branch: 'branch-name'
-            user_email: 'user-name@paygo.com.br'
-            user_name: 'user-name'
-            pull_request_reviewers: 'reviewers'
+            github_token: ${{ secrets.CUSTOM_GH_TOKEN }}      # If blank, default: secrets.GITHUB_TOKEN
+            source_folder: 'source-folder'                    # Folder name to copy contents from
+            destination_repo: 'user-name/repository-name'     # Remote repo creating PR in
+            destination_folder: 'folder-name'                 # Directory to have source folder contents copied into
+            destination_base_branch: 'branch-name'            # Base branch to create PR against
+            destination_head_branch: 'branch-name'            # Name of the branch for this new PR
+            pr_title: "Pulling ${{ github.ref }} into main"   # Title of pull request
+            pr_body: |                                        # Full markdown support, requires pr_title to be set
+              :crown: *An automated PR*
 
-## Variables
-* source_folder: The folder to be moved. Uses the same syntax as the `cp` command. Incude the path for any files not in the repositories root directory.
-* destination_repo: The repository to place the file or directory in.
-* destination_folder: [optional] The folder in the destination repository to place the files. Defaults to the root directory.
-* user_email: The GitHub user email associated with the API token secret.
-* user_name: The GitHub username associated with the API token secret.
-* destination_base_branch: [optional] The branch into which you want your code merged. Default is `main`.
-* destination_head_branch: The branch to create to push the changes. Cannot be `master` or `main`.
-* pull_request_reviewers: [optional] The pull request reviewers. It can be only one (just like 'reviewer') or many (just like 'reviewer1,reviewer2,...')
-
-## ENV
-* API_TOKEN_GITHUB: You must create a personal access token in you account. Follow the link:
-- [Personal access token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)
-
-> You must select the scopes: 'repo = Full control of private repositories', 'admin:org = read:org' and 'write:discussion = Read:discussion';
-
+              My cool PR body.
+            pr_reviewer: "user1,user2"                        # Comma-separated list (no spaces)
+            pr_assignee: "user1,user2"                        # Comma-separated list (no spaces)
+            pr_label: "auto-pr,another label"                 # Comma-separated list (no spaces)
+            pr_milestone: "Milestone 1"                       # Milestone name
+            pr_draft: true                                    # Creates pull request as draft
 
 ## Behavior Notes
 The action will create any destination paths if they don't exist. It will also overwrite existing files if they already exist in the locations being copied to. It will not delete the entire destination repository.

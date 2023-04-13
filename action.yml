@@ -10,12 +10,6 @@ inputs:
   destination_folder:
     description: 'Destination folder to push the origin folder'
     required: false
-  user_email:
-    description: 'Email for the git commit'
-    required: true
-  user_name:
-    description: 'GitHub username for the commit'
-    required: true
   destination_head_branch:
     description: 'The branch to create to push the changes. Cannot be master or main'
     required: true
@@ -23,21 +17,51 @@ inputs:
     description: 'The branch into which you want your code merged.'
     required: false
     default: "main"
-  pull_request_reviewers:
-    description: 'Pull request reviewers users'
+  pr_title:
+    description: Pull request title
+    required: false
+  pr_body:
+    description: Pull request body
+    required: false
+  pr_reviewer:
+    description: Pull request reviewers, comma-separated list (no spaces)
+    required: false
+  pr_assignee:
+    description: Pull request assignees, comma-separated list (no spaces)
+    required: false
+  pr_label:
+    description: Pull request labels, comma-separated list (no spaces)
+    required: false
+  pr_milestone:
+    description: Pull request milestone
+    required: false
+  pr_draft:
+    description: Draft pull request
+    required: false
+  github_token:
+    description: GitHub token secret
+    required: true
+    default: ${{ github.token }}
+  user_email:
+    description: 'Email for the git commit'
+    required: false
+  user_name:
+    description: 'GitHub username for the commit'
     required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.source-folder }}
-    - ${{ inputs.destination-repo }}
-    - ${{ inputs.destination-folder }}
-    - ${{ inputs.user-email }}
-    - ${{ inputs.user-name }}
-    - ${{ inputs.destination-head-branch }}
-    - ${{ inputs.destination-base-branch }}
-    - ${{ inputs.pull-request-reviewers }}
+  env:
+    GITHUB_TOKEN: ${{ inputs.github_token }}
+  # args:
+  #   - ${{ inputs.source-folder }}
+  #   - ${{ inputs.destination-repo }}
+  #   - ${{ inputs.destination-folder }}
+  #   - ${{ inputs.user-email }}
+  #   - ${{ inputs.user-name }}
+  #   - ${{ inputs.destination-head-branch }}
+  #   - ${{ inputs.destination-base-branch }}
+  #   - ${{ inputs.pull-request-reviewers }}
 branding:
   icon: 'git-commit'
   color: 'green'
