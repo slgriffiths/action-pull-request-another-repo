@@ -1,5 +1,5 @@
-# Action pull request another repository 
-This GitHub Action copies a folder from the current repository to a location in another repository and create a pull request
+# Action pull request another repository
+This GitHub Action copies the contents of a folder (not the folder itself) from the current repository to a location in another repository and creates a Pull Request
 
 ## Example Workflow
     name: Push File
@@ -11,10 +11,10 @@ This GitHub Action copies a folder from the current repository to a location in 
         runs-on: ubuntu-latest
         steps:
         - name: Checkout
-          uses: actions/checkout@v2
+          uses: actions/checkout@v3
 
         - name: Create pull request
-          uses: paygoc6/action-pull-request-another-repo@v1.0.1
+          uses: slgriffiths/action-pull-request-another-repo@v1.0.0
           env:
             API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
           with:
@@ -30,7 +30,7 @@ This GitHub Action copies a folder from the current repository to a location in 
 ## Variables
 * source_folder: The folder to be moved. Uses the same syntax as the `cp` command. Incude the path for any files not in the repositories root directory.
 * destination_repo: The repository to place the file or directory in.
-* destination_folder: [optional] The folder in the destination repository to place the file in, if not the root directory.
+* destination_folder: [optional] The folder in the destination repository to place the files. Defaults to the root directory.
 * user_email: The GitHub user email associated with the API token secret.
 * user_name: The GitHub username associated with the API token secret.
 * destination_base_branch: [optional] The branch into which you want your code merged. Default is `main`.
@@ -41,7 +41,7 @@ This GitHub Action copies a folder from the current repository to a location in 
 * API_TOKEN_GITHUB: You must create a personal access token in you account. Follow the link:
 - [Personal access token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)
 
-> You must select the scopes: 'repo = Full control of private repositories', 'admin:org = read:org' and 'write:discussion = Read:discussion'; 
+> You must select the scopes: 'repo = Full control of private repositories', 'admin:org = read:org' and 'write:discussion = Read:discussion';
 
 
 ## Behavior Notes
